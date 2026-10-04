@@ -1,12 +1,19 @@
 #include <iostream>
 #include "Grid.h"
+#define RESET   "\033[0m"
+#define RED     "\033[31m"
+#define BLUE    "\033[34m"
 
-
-bool Grid::isCellValid(int x, int y) {
-	if (x < 0 || y < 0 || x >= row || y >= col || grid[x][y]!=nullptr) {
+bool Grid::isCellInGrid(int x, int y) {
+	if (x < 0 || y < 0 || x >= col  || y >= row) {
 		return false;
 	}
 	return true;
+
+}
+
+bool Grid::isCellOccupied(int x, int y) {
+	return (grid[y][x] != nullptr);
 }
 
 void Grid::displayGrid() {
@@ -17,7 +24,14 @@ void Grid::displayGrid() {
 			}
 			else {
 				int n = grid[i][j]->getValue();
-				std::cout << n;
+				int player = grid[i][j]->playerOwner;
+				if (player == 1) {
+					std::cout << RED << n << RESET;
+				}
+				else if(player == 2){
+					std::cout << BLUE << n << RESET;
+				}
+				
 			}
 		}
 		std::cout << "\n";

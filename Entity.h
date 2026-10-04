@@ -1,5 +1,6 @@
 #pragma once
 #include "Grid.h"
+#include <iostream>
 
 class Grid;
 
@@ -8,18 +9,26 @@ protected:
 	int hp;
 	int dmg;
 	int moveRange;
+	int shootRange;
 	int posx = 0;
 	int posy = 0;
+	Grid* pGrid;
 public:
 
-	void shoot(Grid& g, int x, int y);
+	int playerOwner;
 
-	bool move(Grid& g, int x, int y);
+	int shoot(int x, int y);
+
+	bool move(int x, int y);
+
+	bool isInRange(int x, int y, int range);
 
 	virtual int getValue() = 0;
 
-	void takeDamage(int damage);
+	int takeDamage(int damage);
 
-	bool init(Grid& g, int x, int y);
+	bool init(Grid* g, int x, int y, int player);
+
+	virtual ~Entity();
 
 };

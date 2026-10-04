@@ -11,7 +11,8 @@ class Grid{
 		Entity* grid[row][col] = {};
 
 		//Entity getGridCell(int x, int y);
-		bool isCellValid(int x, int y);
+		bool isCellInGrid(int x, int y);
+		bool isCellOccupied(int x, int y);
 
 		void displayGrid();
 };

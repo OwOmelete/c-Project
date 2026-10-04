@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 
-constexpr int entityNumber = 3;
+constexpr int entityNumber = 2;
 
 class Player {
 public:

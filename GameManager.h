@@ -14,9 +14,15 @@ private:
 
 	void TurnBehaviour();
 	void TurnBehaviourInit();
-	void ChooseUnit();
-	void ChooseAction(int n);
+	int ChooseUnit();
+	char ChooseAction();
 	void ChooseTile(int& x, int& y);
+	bool ActionBehaviour(Entity* selectedUnit);
+	void ManageDeath(int x, int y);
+	int WinCondition();
+	bool ManageWin();
+
+	
 	
 public:
 	void Init();
