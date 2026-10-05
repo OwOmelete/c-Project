@@ -85,7 +85,18 @@ bool GameManager::ActionBehaviour(Entity* selectedUnit) {
 	int x;
 	int y;
 
-	char action = ChooseAction();
+	char action;
+
+
+	//Pas très propre, dans l'idéal j'aurais fait un système d'action qui stockent input, description et fonction associée qui auraient pu être associés a certaines unités pour quelque chose de plus évolutif
+
+	if (selectedUnit->getName() == 'H') {
+		action = ChooseActionHealing();
+	}
+	else {
+		action = ChooseAction();
+	}
+	
 
 	switch (action) {
 	case 'r':
@@ -94,37 +105,17 @@ bool GameManager::ActionBehaviour(Entity* selectedUnit) {
 		ChooseTile(x, y);
 		return selectedUnit->move(x, y);
 	case 'a': {
-
-		//result = "code" de retour de shoot : -2 = case invalide, -1 = tir sur une case vide, le reste sont les pvs restants de l'unité touchée, dans le cas ou on retourne 0, on élimine la cible.
-
 		ChooseTile(x, y);
-		int result = selectedUnit->shoot(x, y);
-		if (result == -2) {
-			return false;
-		}
-		else if (result == 0) {
-			ManageDeath(x, y);
-		}
-		return true;
+		return selectedUnit->shoot(x, y);
+	}
+	case 'h': {
+		ChooseTile(x, y);
+		return selectedUnit->shoot(x, y);
 	}
 	case 'i':
 		return false;
 	}
 }
-
-void GameManager::ManageDeath(int x, int y) {
-	int owner = g.grid[y][x]->playerOwner;
-
-	for (int i = 0; i < entityNumber; i++) {
-		if (g.grid[y][x] == players[owner - 1].entitys[i]) {
-			delete g.grid[y][x];
-			players[owner - 1].entitys[i] = nullptr;
-		}
-	}
-}
-
-
-
 
 int GameManager::ChooseUnit() {
 	bool isInputValid = false;
@@ -136,7 +127,13 @@ int GameManager::ChooseUnit() {
 		for (int i = 0; i < entityNumber; i++)
 		{
 			if (players[currentPlayer-1].entitys[i] != nullptr) {
-				std::cout << i << ",";
+				if (!players[currentPlayer - 1].entitys[i]->isAlive()) {
+					delete players[currentPlayer - 1].entitys[i];
+				}
+				else {
+					std::cout << i << ",";
+				}
+				
 
 			}
 		}
@@ -161,6 +158,28 @@ char GameManager::ChooseAction() {
 		std::cout << "- r pour revenir en arriere \n";
 		char input = _getch();
 		
+		for (char c : actions) {
+			if (input == c) {
+				return c;
+			}
+		}
+
+		std::cout << "Action invalide. \n";
+
+	}
+}
+
+char GameManager::ChooseActionHealing() {
+	bool isInputValid = false;
+	char actions[4]{ 'm','h','i','r' };
+	while (!isInputValid) {
+		std::cout << "Choisissez une action :\n";
+		std::cout << "- m pour move l'unite selectionnee \n";
+		std::cout << "- h pour soigner l'unite selectionnee \n";
+		std::cout << "- i pour obtenir les infos de l'unite selectionnee \n";
+		std::cout << "- r pour revenir en arriere \n";
+		char input = _getch();
+
 		for (char c : actions) {
 			if (input == c) {
 				return c;

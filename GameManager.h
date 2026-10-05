@@ -16,9 +16,9 @@ private:
 	void TurnBehaviourInit();
 	int ChooseUnit();
 	char ChooseAction();
+	char ChooseActionHealing();
 	void ChooseTile(int& x, int& y);
 	bool ActionBehaviour(Entity* selectedUnit);
-	void ManageDeath(int x, int y);
 	int WinCondition();
 	bool ManageWin();
 

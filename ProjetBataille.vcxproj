@@ -124,17 +124,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseTank.cpp" />
+    <ClCompile Include="Bombardier.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Healer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ProjetBataille.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseTank.h" />
+    <ClInclude Include="Bombardier.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Healer.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

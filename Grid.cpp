@@ -18,12 +18,13 @@ bool Grid::isCellOccupied(int x, int y) {
 
 void Grid::displayGrid() {
 	for (int i = row-1; i >-1; i--) {
+		std::cout << "|";
 		for (int j = 0; j < col; j++) {
 			if (grid[i][j] == nullptr) {
-				std::cout << 0;
+				std::cout << "_";
 			}
 			else {
-				int n = grid[i][j]->getValue();
+				char n = grid[i][j]->getName();
 				int player = grid[i][j]->playerOwner;
 				if (player == 1) {
 					std::cout << RED << n << RESET;
@@ -33,6 +34,7 @@ void Grid::displayGrid() {
 				}
 				
 			}
+			std::cout << "|";
 		}
 		std::cout << "\n";
 	}

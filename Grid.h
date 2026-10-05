@@ -2,7 +2,7 @@
 #include "Entity.h"
 
 constexpr int row = 10;
-constexpr int col = 20;
+constexpr int col = 10;
 
 class Entity;
 

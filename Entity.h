@@ -13,22 +13,26 @@ protected:
 	int posx = 0;
 	int posy = 0;
 	Grid* pGrid;
+	char name;
 public:
 
 	int playerOwner;
 
-	int shoot(int x, int y);
+	virtual bool shoot(int x, int y);
 
-	bool move(int x, int y);
+	virtual bool move(int x, int y);
 
 	bool isInRange(int x, int y, int range);
 
-	virtual int getValue() = 0;
+	virtual char getName() = 0;
 
-	int takeDamage(int damage);
+	void takeDamage(int damage);
+
+	void heal(int healing);
 
 	bool init(Grid* g, int x, int y, int player);
 
 	virtual ~Entity();
 
+	bool isAlive();
 };

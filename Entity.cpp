@@ -23,21 +23,26 @@ Entity::~Entity()
 	pGrid->grid[posy][posx] = nullptr;
 }
 
-int Entity::shoot( int x, int y) {
+bool Entity::isAlive()
+{
+	return hp > 0;
+}
+
+bool Entity::shoot( int x, int y) {
 	if (isInRange(x, y, shootRange)) {
 		std::cout << "Case hors de portée. \n";
-		return -2;
+		return false;
 	}
 	if (pGrid->grid[y][x] != nullptr) {
 		std::cout << "Touche! \n";
 
-		return pGrid->grid[y][x]->takeDamage(dmg);
+		pGrid->grid[y][x]->takeDamage(dmg);
 		
 	}
 	else {
 		std::cout << "Rate... \n";
 	}
-	return -1;
+	return true;
 }
 
 bool Entity::move( int x, int y) {
@@ -61,15 +66,23 @@ bool Entity::isInRange(int x, int y, int range)
 	return (abs(x - posx) + abs(y - posy) > range);
 }
 
-int Entity::takeDamage(int damage) {
+void Entity::takeDamage(int damage) {
 	hp -= damage;
 	if (hp < 0) {
 		hp = 0;
+
+		pGrid->grid[posy][posx] = nullptr;
+
 		std::cout << "Unite detruite. \n";
 	}
 	else {
 		std::cout << damage << " degats ont ete infliges \n";
 	}
-	return hp;
+}
+
+void Entity::heal(int healing)
+{
+	hp += healing;
+	std::cout << healing << " points de vie ont ete soignes \n";
 }
 

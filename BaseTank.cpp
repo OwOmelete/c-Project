@@ -4,8 +4,8 @@ BaseTank::~BaseTank()
 {
 }
 
-int BaseTank::getValue() {
-	return displayedValue;
+char BaseTank::getName() {
+	return name;
 }
 
 BaseTank::BaseTank() : Entity() {
@@ -13,4 +13,5 @@ BaseTank::BaseTank() : Entity() {
 	dmg = baseDmg;
 	moveRange = baseMoveRange;
 	shootRange = baseShootRange;
+	name = baseName;
 }

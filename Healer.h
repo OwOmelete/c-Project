@@ -1,21 +1,23 @@
 #pragma once
 #include "Entity.h"
 
-class BaseTank : public Entity {
+class Healer : public Entity {
 private:
 	int baseHp = 10;
 	int baseDmg = 20;
 	int baseMoveRange = 10;
 	int baseShootRange = 5;
+	int explosionRange = 3;
+	char baseName = 'H';
 
-
-	char baseName = 'T';
 public:
 
-	BaseTank();
+	Healer();
 
-	
-	~BaseTank() override;
+
+	~Healer() override;
 
 	char getName() override;
+
+	bool shoot(int x, int y) override;
 };
