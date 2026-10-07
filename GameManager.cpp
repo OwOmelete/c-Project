@@ -2,6 +2,7 @@
 #include "conio.h"
 #include "GameManager.h"
 #include "Grid.h"
+#include "Equipement.h"
 
 
 //Boucle de jeu principale
@@ -12,10 +13,10 @@ void GameManager::TurnBehaviour() {
 
 	while (!isGameOver) {
 		std::cout << "Au tour de joueur " << currentPlayer << "\n";
-		Entity* selectedUnit = players[currentPlayer-1].entitys[ChooseUnit()];
 
 		isActionDone = false;
 		while (!isActionDone) {
+			Entity* selectedUnit = players[currentPlayer - 1].entitys[ChooseUnit(currentPlayer)];
 			isActionDone = ActionBehaviour(selectedUnit);
 		}
 
@@ -26,6 +27,8 @@ void GameManager::TurnBehaviour() {
 		else {
 			currentPlayer = 2;
 		}
+
+		DeathDetection();
 
 		isGameOver = ManageWin();
 
@@ -54,7 +57,7 @@ int GameManager::WinCondition()
 	else if (!Player1Alive) return 1;
 	else if (!Player2Alive) return 2;
 	else return 0;
-	
+
 }
 
 bool GameManager::ManageWin()
@@ -65,7 +68,7 @@ bool GameManager::ManageWin()
 		std::cout << "Les deux joueurs sont encore en vie \n";
 
 		return false;
-		
+
 	case '1':
 		std::cout << "Joueur 1 a gagne ! \n";
 
@@ -96,7 +99,7 @@ bool GameManager::ActionBehaviour(Entity* selectedUnit) {
 	else {
 		action = ChooseAction();
 	}
-	
+
 
 	switch (action) {
 	case 'r':
@@ -112,35 +115,93 @@ bool GameManager::ActionBehaviour(Entity* selectedUnit) {
 		ChooseTile(x, y);
 		return selectedUnit->shoot(x, y);
 	}
-	case 'i':
-		return false;
 	}
 }
 
-int GameManager::ChooseUnit() {
+void GameManager::DeathDetection() {
+	int lootPlayer1 = 0;
+	int lootPlayer2 = 0;
+
+	for (int i = 0; i < entityNumber; i++)
+	{
+		if (players[1].entitys[i] != nullptr) {
+			if (!players[1].entitys[i]->isAlive()) {
+				delete players[1].entitys[i];
+				players[1].entitys[i] = nullptr;
+				lootPlayer1++;
+			}
+		}
+	}
+	for (int i = 0; i < entityNumber; i++)
+	{
+		if (players[0].entitys[i] != nullptr) {
+			if (!players[0].entitys[i]->isAlive()) {
+				delete players[0].entitys[i];
+				players[0].entitys[i] = nullptr;
+				lootPlayer2++;
+			}
+		}
+	}
+
+	if (lootPlayer1 > 0) {
+		LootEquipement(lootPlayer1, 1);
+	}
+	if (lootPlayer2 > 0) {
+		LootEquipement(lootPlayer2, 2);
+	}
+
+}
+
+void GameManager::LootEquipement(int n, int player)
+{
+	for (int i = 0; i < n; i++) {
+		Equipement equipement = Equipement();
+
+		std::cout << "Joueur " << player << ".";
+
+		switch (equipement.type)
+		{
+		case Equipement::Attack:
+			std::cout << " Vous avez trouve un equipement qui augmente l'attaque de " << equipement.value << ".\n";
+
+			break;
+		case Equipement::Move:
+			std::cout << " Vous avez trouve un equipement qui augmente les deplacements de " << equipement.value << ".\n";
+			break;
+		case Equipement::Range:
+			std::cout << " Vous avez trouve un equipement qui augmente la portee de " << equipement.value << ".\n";
+			break;
+		}
+		std::cout << "Choisissez l'unite sur laquelle vous voulez installer cet equipement. \n";
+
+		Entity* selectedUnit = players[player - 1].entitys[ChooseUnit(player)];
+
+		selectedUnit->installEquipement(&equipement);
+
+		std::cout << "Equipement installe. \n";
+
+	}
+}
+
+
+
+int GameManager::ChooseUnit(int player) {
 	bool isInputValid = false;
 	int input;
 
 	while (!isInputValid) {
 		std::string s;
-		std::cout << "Choisissez une unite : ";
+		std::cout << "Choisissez une unite : \n";
 		for (int i = 0; i < entityNumber; i++)
 		{
-			if (players[currentPlayer-1].entitys[i] != nullptr) {
-				if (!players[currentPlayer - 1].entitys[i]->isAlive()) {
-					delete players[currentPlayer - 1].entitys[i];
-				}
-				else {
-					std::cout << i << ",";
-				}
-				
-
+			if (players[player - 1].entitys[i] != nullptr) {
+				std::cout << players[player - 1].entitys[i]->getName() << " - " << i << "\n";
 			}
 		}
 		std::cout << "\n";
 		std::cin >> input;
 
-		if (players[currentPlayer-1].entitys[input] != nullptr) {
+		if (players[player - 1].entitys[input] != nullptr) {
 			isInputValid = true;
 		}
 	}
@@ -149,15 +210,14 @@ int GameManager::ChooseUnit() {
 
 char GameManager::ChooseAction() {
 	bool isInputValid = false;
-	char actions[4]{ 'm','a','i','r' };
+	char actions[3]{ 'm','a','r' };
 	while (!isInputValid) {
 		std::cout << "Choisissez une action :\n";
 		std::cout << "- m pour move l'unite selectionnée \n";
 		std::cout << "- a pour faire attaquer l'unite selectionnee \n";
-		std::cout << "- i pour obtenir les infos de l'unite selectionnee \n";
 		std::cout << "- r pour revenir en arriere \n";
 		char input = _getch();
-		
+
 		for (char c : actions) {
 			if (input == c) {
 				return c;
@@ -171,12 +231,11 @@ char GameManager::ChooseAction() {
 
 char GameManager::ChooseActionHealing() {
 	bool isInputValid = false;
-	char actions[4]{ 'm','h','i','r' };
+	char actions[3]{ 'm','h','r' };
 	while (!isInputValid) {
 		std::cout << "Choisissez une action :\n";
 		std::cout << "- m pour move l'unite selectionnee \n";
 		std::cout << "- h pour soigner l'unite selectionnee \n";
-		std::cout << "- i pour obtenir les infos de l'unite selectionnee \n";
 		std::cout << "- r pour revenir en arriere \n";
 		char input = _getch();
 
@@ -224,7 +283,7 @@ void GameManager::TurnBehaviourInit() {
 			std::cout << "Entrez coordonee y :\n";
 			std::cin >> y;
 
-			if (g.isCellInGrid(x, y) && !g.isCellOccupied(x,y)) {
+			if (g.isCellInGrid(x, y) && !g.isCellOccupied(x, y)) {
 				isValid = true;
 				players[currentPlayer - 1].entitys[currentIndex]->init(&g, x, y, currentPlayer);
 				g.displayGrid();
@@ -234,7 +293,7 @@ void GameManager::TurnBehaviourInit() {
 			}
 		}
 		isValid = false;
-		if (currentIndex == entityNumber-1 && currentPlayer == 2) {
+		if (currentIndex == entityNumber - 1 && currentPlayer == 2) {
 			currentPlayer = 1;
 			return;
 		}
@@ -245,7 +304,7 @@ void GameManager::TurnBehaviourInit() {
 		else {
 			currentPlayer++;
 		}
-		
+
 	}
 }
 

@@ -4,13 +4,7 @@
 #include "Healer.h"
 
 Player::Player() {
-	for (int i = 0; i < entityNumber; i++) {
-		if (i == 0) {
-			entitys[i] = new Bombardier();
-		}
-		else {
-			entitys[i] = new Healer();
-		}
-
-	}
+	entitys[0] = new BaseTank();
+	entitys[1] = new Bombardier();
+	entitys[2] = new Healer();
 }

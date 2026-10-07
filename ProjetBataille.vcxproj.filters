@@ -39,6 +39,9 @@
     <ClCompile Include="Healer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Equipement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Grid.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Healer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Equipement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

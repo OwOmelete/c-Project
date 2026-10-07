@@ -14,13 +14,15 @@ private:
 
 	void TurnBehaviour();
 	void TurnBehaviourInit();
-	int ChooseUnit();
+	int ChooseUnit(int player);
 	char ChooseAction();
 	char ChooseActionHealing();
 	void ChooseTile(int& x, int& y);
 	bool ActionBehaviour(Entity* selectedUnit);
 	int WinCondition();
 	bool ManageWin();
+	void DeathDetection();
+	void LootEquipement(int n, int player);
 
 	
 	

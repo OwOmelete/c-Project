@@ -1,5 +1,6 @@
 #pragma once
 #include "Grid.h"
+#include "Equipement.h"
 #include <iostream>
 
 class Grid;
@@ -14,6 +15,7 @@ protected:
 	int posy = 0;
 	Grid* pGrid;
 	char name;
+	Equipement* equipement;
 public:
 
 	int playerOwner;
@@ -35,4 +37,6 @@ public:
 	virtual ~Entity();
 
 	bool isAlive();
+
+	void installEquipement(Equipement* newEquipement);
 };

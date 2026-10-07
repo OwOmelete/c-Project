@@ -4,8 +4,8 @@
 class BaseTank : public Entity {
 private:
 	int baseHp = 10;
-	int baseDmg = 20;
-	int baseMoveRange = 10;
+	int baseDmg = 4;
+	int baseMoveRange = 3;
 	int baseShootRange = 5;
 
 

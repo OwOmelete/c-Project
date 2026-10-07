@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "Grid.h"
 #include "Entity.h"
+#include "Equipement.h"
 
 
 
@@ -20,12 +21,29 @@ bool Entity::init(Grid* g, int x, int y, int player) {
 
 Entity::~Entity()
 {
+	delete equipement;
 	pGrid->grid[posy][posx] = nullptr;
 }
 
 bool Entity::isAlive()
 {
 	return hp > 0;
+}
+
+void Entity::installEquipement(Equipement* newEquipement)
+{
+	equipement = newEquipement;
+	switch (equipement->type) {
+	case Equipement::Range :
+		shootRange += equipement->value;
+		break;
+	case Equipement::Move:
+		moveRange += equipement->value;
+		break;
+	case Equipement::Attack :
+		dmg += equipement->value;
+		break;
+	}
 }
 
 bool Entity::shoot( int x, int y) {

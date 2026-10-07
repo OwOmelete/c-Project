@@ -4,10 +4,10 @@
 class Bombardier : public Entity {
 private:
 	int baseHp = 10;
-	int baseDmg = 20;
-	int baseMoveRange = 10;
-	int baseShootRange = 5;
-	int explosionRange = 3;
+	int baseDmg = 3;
+	int baseMoveRange = 3;
+	int baseShootRange = 3;
+	int explosionRange = 2;
 	char baseName = 'B';
 public:
 

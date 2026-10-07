@@ -3,11 +3,10 @@
 
 class Healer : public Entity {
 private:
-	int baseHp = 10;
-	int baseDmg = 20;
-	int baseMoveRange = 10;
+	int baseHp = 8;
+	int baseDmg = 3;
+	int baseMoveRange = 4;
 	int baseShootRange = 5;
-	int explosionRange = 3;
 	char baseName = 'H';
 
 public:
